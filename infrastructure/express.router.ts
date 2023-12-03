@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { UserService } from "../user/user.interface";
+import { UserService } from "../user/user.services";
 import { UserController } from "../user/user.controller";
 import { UserRouter } from "../user/user.router";
 
+// chargé de rediriger les requêtes HTTP vers les bons routeurs métiers
 export class ExpressRouter {
     router = Router();
 
@@ -30,3 +31,4 @@ export class ExpressRouter {
         this.userRouter = new UserRouter(this.userController);
     }
 }
+

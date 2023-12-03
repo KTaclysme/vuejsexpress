@@ -1,9 +1,10 @@
 import { ExpressServer } from "./express-server";
 import * as dotenv from 'dotenv'
 import { ExpressRouter } from "./express.router";
-import { UserService } from "../user/user.interface";
-import { UserJSONService } from "../user/user.json-service";
+import { UserService } from "../user/user.services";
+import { UserJSONService } from "../user/user.services";
 
+//CONFIGURATION DE L'APPLICATION
 export class ExpressApplication {
     private server!: ExpressServer;
     private expressRouter!: ExpressRouter;
@@ -27,12 +28,15 @@ export class ExpressApplication {
         this.configureExpressRouter();
         this.configureServer();
     }
+
+    //Configuration de l'environnement en allant chercher des infos dans .env (port)
     private configureEnvironment(): void {
         dotenv.config({
             path: '.env'
         })
     }
 
+    //'port' est initialisé et on va le chercher dans la classe getPort
     private configureServerPort(): void {
         this.port = this.getPort();
     }
@@ -41,6 +45,7 @@ export class ExpressApplication {
         this.userService = new UserJSONService();
     }
 
+    // Vérifier s'il y a un port si il y en a pas erreur sinon 'port' est défini
     private getPort(): string {
         const port = process.env.PORT;
         if (!port) {
@@ -49,6 +54,7 @@ export class ExpressApplication {
         return port;
     } 
     
+
     private configureExpressRouter(): void {
         this.expressRouter = new ExpressRouter(this.userService);
     }

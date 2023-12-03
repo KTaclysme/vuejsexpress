@@ -1,6 +1,6 @@
 import { negativeNumber, notDefined, spaces } from "../src/utils";
-import { User } from "./user";
-import { UserService } from "./user.interface";
+import { User } from "./user.services";
+import { UserService } from "./user.services";
 
 export class UserController {
     constructor(private userService: UserService) {}
