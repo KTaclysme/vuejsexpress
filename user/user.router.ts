@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserController } from "./user.controller";
 
+// mission de rediriger les requêtes dédiées aux utilisateurs vers les bonnes méthodes du UserController
 export class UserRouter {
     router = Router();
 

@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import cors from 'cors';
 import { ExpressRouter } from './express.router';
 
 // configurer et lancer le serveur express qui va être utilisé pour réceptionner des requêtes HTTP
@@ -10,11 +11,15 @@ export class ExpressServer {
         private expressRouter: ExpressRouter,
         private port: string,
         ) {
-            this.configureBodyParser();
+            this.configureImport();
             this.configureRoutes();
         }
 
-    private configureBodyParser(): void {
+    private configureImport(): void {
+        this.express.use(cors({
+            origin: 'http://localhost:5173',
+            optionsSuccessStatus: 200
+        }));
         this.express.use(bodyParser.json());
     }
 
