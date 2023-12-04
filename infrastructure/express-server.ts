@@ -2,10 +2,13 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import { ExpressRouter } from './express.router';
+import { connectToDatabase } from './database.service';
+
 
 // configurer et lancer le serveur express qui va être utilisé pour réceptionner des requêtes HTTP
 export class ExpressServer {
     private express = express();
+    
 
     constructor(
         private expressRouter: ExpressRouter,
@@ -21,6 +24,7 @@ export class ExpressServer {
             optionsSuccessStatus: 200
         }));
         this.express.use(bodyParser.json());
+        connectToDatabase();
     }
 
     //Toutes les routes sur /api => ExpressRouter

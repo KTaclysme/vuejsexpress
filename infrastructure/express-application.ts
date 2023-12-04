@@ -1,5 +1,5 @@
 import { ExpressServer } from "./express-server";
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 import { ExpressRouter } from "./express.router";
 import { UserService } from "../user/user.services";
 import { UserJSONService } from "../user/user.services";
