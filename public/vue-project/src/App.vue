@@ -2,7 +2,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import LayoutH from './components/LayoutHeader.vue'
 import LayoutF from './components/LayoutFooter.vue'
-import HomeView from './views/HomeView.vue';
 </script>
 
 <template>
@@ -11,22 +10,20 @@ import HomeView from './views/HomeView.vue';
   </header>
 
   <body>
-    <HomeView/>
+    <RouterView />
   </body>
 
   <footer>
     <LayoutF />
   </footer>
-
-  <RouterView />
 </template>
 
 <style scoped>
 header {
-  margin-top: 45px;
+  margin-top: 64px;
 }
 
 footer {
-  margin-bottom: 45px;
+  margin-bottom: 64px;
 }
 </style>

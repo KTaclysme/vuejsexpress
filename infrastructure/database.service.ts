@@ -3,22 +3,25 @@ import * as mongoDB from "mongodb";
 import * as dotenv from 'dotenv';
 
 // Global Variables
-export const collections: { games?: mongoDB.Collection } = {}
+export const collections: { Users?: mongoDB.Collection } = {}
 
 // Initialize Connection
-export async function connectToDatabase () {
-    dotenv.config();
- 
-    const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING);
-            
+export async function connectToDatabase() {
+  dotenv.config();
+
+  const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING);
+
+  try {
     await client.connect();
-        
+
     const db: mongoDB.Db = client.db(process.env.DB_NAME);
-   
-    const gamesCollection: mongoDB.Collection = db.collection(process.env.USER);
- 
-  collections.games = gamesCollection;
-       
-         console.log(`Successfully connected to database: ${db.databaseName} and collection: ${gamesCollection.collectionName}`);
- }
- 
+
+    const usersCollection: mongoDB.Collection = db.collection(process.env.USERS);
+
+    collections.Users = usersCollection;
+
+    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${usersCollection.collectionName}`);
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+}

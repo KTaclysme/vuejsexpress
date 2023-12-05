@@ -3,10 +3,11 @@
     <!-- NavBar -->
     <div class="navbar">
       <ul>
-        <li><router-link class="navchar" to="/">Home</router-link></li>
-        <li><router-link class="navchar" to="/inscription">Inscription</router-link></li>
+        <li>
+          <h1><router-link class="navtitle" to="/">CZON</router-link></h1>
+        </li>
+        <li><router-link class="navchar" to="/produit">Produits</router-link></li>
         <li><router-link class="navchar" to="/connexion">Connexion</router-link></li>
-        <li><router-link class="navchar" to="about.asp">About</router-link></li>
       </ul>
     </div>
   </div>
@@ -56,6 +57,11 @@ export default {
 
 .footer li {
   float: right;
+}
+
+.navtitle {
+  text-decoration: none;
+  color: white;
 }
 
 .layout li .navchar {
