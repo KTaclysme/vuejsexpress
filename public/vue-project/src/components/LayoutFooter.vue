@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-  name: 'Layout',
+  name: 'LayoutFooter',
   data() {
     return {
       msg: 'Layout'

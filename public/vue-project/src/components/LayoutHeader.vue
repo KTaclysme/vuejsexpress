@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: 'Layout',
+  name: 'LayoutHeader',
   data() {
     return {
       msg: 'Layout'

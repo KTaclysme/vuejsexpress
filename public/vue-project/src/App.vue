@@ -11,6 +11,7 @@ import HomeView from './views/HomeView.vue';
   </header>
 
   <body>
+    <HomeView/>
   </body>
 
   <footer>
