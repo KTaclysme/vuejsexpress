@@ -1,69 +1,56 @@
 <script>
 
-import axios from 'axios';
-import validator from 'validator';
-import { useRouter } from 'vue-router';
+import users from "../../../../jsonFiles/registered.json";
 
 export default {
   data() {
     return {
-      nom: '',
-      prenom: '',
-      sexe: '',
-      dateDeNaissance: '',
-      mail: '',
-      mdp: '',
-      mailError: '',
-      mdpError: '',
-      message: ''
+      nom: "",
+      prenom: "",
+      mail: "",
+      mdp: "",
+      mailError: "",
+      message: "",
     };
   },
   methods: {
     handleInscriptionSubmit() {
-      if (!validator.isEmail(this.mail)) {
-        this.mailError = 'Veuillez saisir une adresse mail valide.';
+      if (!this.nom || !this.prenom || !this.mail || !this.mdp) {
+        this.mailError = "Veuillez remplir tous les champs";
         return;
       }
-      this.mailError = '';
 
-      const isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(this.mdp);
-      if (!isPasswordValid) {
-        this.mdpError = 'Le mot de passe doit contenir au moins 6 caractères avec au moins 1 majuscule, 1 chiffre et 1 caractère spécial.';
-        return;
+      const existingUser = users.find((user) => user.email === this.mail);
+
+      if (existingUser) {
+        this.mailError = "Adresse mail déjà utilisée";
+        this.$router.push("/connexion");
+      } else {
+        // Ajouter le nouvel utilisateur au fichier JSON (ou à votre backend)
+        const newUser = {
+          id: users.length + 1,
+          name: `${this.prenom} ${this.nom}`,
+          email: this.mail,
+          password: this.mdp,
+        };
+
+        users.push(newUser);
+
+        // Vous pouvez sauvegarder le fichier JSON ici, par exemple dans votre backend
+        // fs.writeFileSync('./path/to/your/users.json', JSON.stringify(users));
+
+        this.message = "Inscription réussie";
+        this.clearForm(); // Effacer le formulaire après une inscription réussie
       }
-      this.mdpError = '';
-
-      const utilisateur = {
-        nom: this.nom,
-        prenom: this.prenom,
-        sexe: this.sexe,
-        date_de_nais: this.dateDeNaissance,
-        mail: this.mail,
-        mdp: this.mdp
-      };
-
-      // Redirection et un timeout de quelques secondes pour simuler un faux chargement
-      axios.post('http://localhost:3000/inscription', utilisateur)
-        .then((response) => {
-          console.log(response.data);
-          this.message = "Vous êtes inscrit !";
-          setTimeout(() => {
-            this.$router.push("/connexion");
-          }, PAUSE_DURATION);
-        })
-        .catch((error) => {
-          console.error(error);
-          this.message = "Oups, une erreur s'est produite, réessayez";
-        });
     },
-    handleNomChange(e) {
-      this.nom = e.target.value.toUpperCase();
+    clearForm() {
+      this.nom = "";
+      this.prenom = "";
+      this.mail = "";
+      this.mdp = "";
+      this.mailError = "";
     },
-    handlePrenomChange(e) {
-      const capitalizedPrenom = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase();
-      this.prenom = capitalizedPrenom;
-    }
-  }
+  },
 };
 </script>
 

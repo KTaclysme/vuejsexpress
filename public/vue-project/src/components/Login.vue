@@ -20,47 +20,57 @@
 </template>
 
 <script>
-import axios from 'axios';
-import validator from 'validator';
+import passwords from "../../../../jsonFiles/registered.json";
+import fs from 'fs';
 
 export default {
   data() {
     return {
-      mail: '',
-      mailError: '',
-      mdp: '',
-      message: ''
+      mail: "",
+      mdp: "",
+      mailError: "",
+      message: "",
     };
   },
   methods: {
     handleConnexionSubmit() {
-      if (!validator.isEmail(this.mail)) {
-        this.mailError = 'Veuillez saisir une adresse mail valide.';
+      if (!this.mail || !this.mdp) {
+        this.mailError = "Veuillez saisir une adresse mail et un mot de passe";
         return;
       }
-      this.mailError = '';
 
-      const utilisateur = {
-        mail: this.mail,
-        mdp: this.mdp
+      // Recherchez le mot de passe correspondant à l'adresse e-mail dans votre fichier JSON
+      const user = passwords.find((user) => user.email === this.mail);
+
+      if (user && user.password === this.mdp) {
+        // Connexion réussie
+        this.message = "Connexion réussie!";
+        this.$router.push("/tuttifrutti");
+      } else {
+        // Mot de passe incorrect
+        this.mailError = "Adresse mail ou mot de passe incorrect";
+      }
+    },
+    handleInscriptionSubmit() {
+      // Logique pour enregistrer un nouvel utilisateur dans le fichier JSON
+      const newUser = {
+        email: this.mail,
+        password: this.mdp,
       };
 
-      axios.post('http://localhost:3000/connexion', utilisateur)
-        .then((response) => {
-          console.log(response.data);
-          this.message = "Connexion réussie !";
-          setTimeout(() => {
-            this.$router.push("/tuttifrutti");
-          }, PAUSE_DURATION);
-        })
-        .catch((error) => {
-          console.error(error);
-          this.message = "Oups, une erreur s'est produite, réessayez";
-        });
-    }
-  }
+      passwords.push(newUser);
+
+      // Enregistrez les modifications dans le fichier JSON
+      fs.writeFileSync("../../../../jsonFiles/registered.json", JSON.stringify(passwords));
+
+      this.message = "Inscription réussie!";
+      this.$router.push("/tuttifrutti");
+    },
+  },
 };
+
 </script>
+
 
 <style scoped>
 .inscription input {

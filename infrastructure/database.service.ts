@@ -1,27 +1,52 @@
-// External Dependencies
-import * as mongoDB from "mongodb";
-import * as dotenv from 'dotenv';
+// databaseService.js
+import fs from 'fs/promises';
 
-// Global Variables
-export const collections: { Users?: mongoDB.Collection } = {}
+const usersFilePath = '../jsonFiles/registered.json';
 
-// Initialize Connection
-export async function connectToDatabase() {
-  dotenv.config();
-
-  const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING);
-
+export async function registerUser(email, password) {
   try {
-    await client.connect();
+    // Load existing users from the JSON file
+    const usersData = await fs.readFile(usersFilePath, 'utf-8');
+    const users = JSON.parse(usersData);
 
-    const db: mongoDB.Db = client.db(process.env.DB_NAME);
+    // Check if the email already exists
+    const existingUser = users.find(user => user.email === email);
+    if (existingUser) {
+      return { error: 'Email already exists' };
+    }
 
-    const usersCollection: mongoDB.Collection = db.collection(process.env.USERS);
+    // Add the new user
+    const newUser = { email, password };
+    users.push(newUser);
 
-    collections.Users = usersCollection;
+    // Save the updated users array to the JSON file
+    await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2));
 
-    console.log(`Successfully connected to database: ${db.databaseName} and collection: ${usersCollection.collectionName}`);
+    return { message: 'Inscription réussie' };
   } catch (error) {
-    console.error('Error connecting to the database:', error);
+    console.error('Error during registration:', error);
+    return { error: 'Internal server error' };
+  }
+}
+
+export async function loginUser(email, password) {
+  try {
+    // Load existing users from the JSON file
+    const usersData = await fs.readFile(usersFilePath, 'utf-8');
+    const users = JSON.parse(usersData);
+
+    // Find the user by email
+    const user = users.find(user => user.email === email);
+
+    // Check if the user exists and the password matches
+    if (user && user.password === password) {
+      return { message: 'Connexion réussie' };
+    }
+
+    // Unauthorized access
+    return { error: 'Adresse mail ou mot de passe incorrect' };
+  } catch (error) {
+    console.error('Error during login:', error);
+    return { error: 'Internal server error' };
   }
 }

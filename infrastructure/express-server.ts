@@ -1,15 +1,12 @@
 import bodyParser from 'body-parser';
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { ExpressRouter } from './express.router';
-import { MongoClient, ObjectId } from 'mongodb';
+import fs from 'fs/promises';
 
 export class ExpressServer {
   private express: Application;
-  private db: any; // Ajout d'une propriété pour stocker la connexion à la base de données
 
   constructor(
-    private expressRouter: ExpressRouter,
     private port: string,
   ) {
     this.express = express();
@@ -23,54 +20,77 @@ export class ExpressServer {
       optionsSuccessStatus: 200
     }));
     this.express.use(bodyParser.json());
-    // Connexion à la base de données MongoDB
-    // this.connectToDatabase();
   }
 
   private configureRoutes(): void {
-    this.express.use('/api', this.expressRouter.router);
-
-    this.express.post('/inscription', async (req: Request, res: Response) => {
-      const { nom, prenom, sexe, date_de_nais, mail, mdp } = req.body;
-
-      const utilisateur = {
-        nom,
-        prenom,
-        sexe,
-        date_de_nais,
-        mail,
-        mdp
-      };
-
-      const result = await this.db.collection('utilisateur').insertOne(utilisateur);
-
-      res.send({ message: 'Inscription réussie', insertedId: result.insertedId });
-    });
-
-    this.express.post('/connexion', async (req: Request, res: Response) => {
-      const { mail, mdp } = req.body;
-
-      const user = await this.db.collection('utilisateur').findOne({ mail, mdp });
-
-      if (user) {
-        res.send({ message: 'Connexion réussie', userId: user._id });
-      } else {
-        res.status(401).send({ error: 'Adresse mail ou mot de passe invalide' });
-      }
-    });
+    this.express.post('/inscription', this.handleInscriptionRequest.bind(this));
+    this.express.post('/connexion', this.handleConnexionRequest.bind(this));
   }
 
-//   private async connectToDatabase(): Promise<void> {
-//     const client = new MongoClient('mongodb://localhost:27017');
+  private async handleInscriptionRequest(req: Request, res: Response): Promise<void> {
+    const { nom, prenom, sexe, date_de_nais, mail, mdp } = req.body;
+  
+    try {
+      const users = await this.readUsersFromJson();
+  
+      // Vérifier si l'e-mail existe déjà
+      const existingUser = users.find((user: any) => user.mail === mail);
+      if (existingUser) {
+         res.json({ error: 'Adresse mail déjà utilisée' });
+      }
+  
+      // Ajouter le nouvel utilisateur
+      const newUser = { nom, prenom, sexe, date_de_nais, mail, mdp };
+      users.push(newUser);
+  
+      // Enregistrer les utilisateurs mis à jour dans le fichier JSON
+      await this.writeUsersToJson(users);
+  
+      res.json({ message: 'Inscription réussie', insertedId: newUser.mail });
+    } catch (error) {
+      console.error('Error during registration:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+    return; // Ajoutez cette ligne pour s'assurer que la fonction retourne une promesse void
+  }
+  
+  
+  private async handleConnexionRequest(req: Request, res: Response): Promise<void> {
+    const { mail, mdp } = req.body;
 
-//     try {
-//       await client.connect();
-//       this.db = client.db('UserVue');
-//       console.log('Connected to the database');
-//     } catch (error) {
-//       console.error('Error connecting to the database:', error);
-//     }
-//   }
+    try {
+      const users = await this.readUsersFromJson();
+
+      const user = users.find((u: any) => u.mail === mail && u.mdp === mdp);
+
+      if (user) {
+        res.json({ message: 'Connexion réussie', userId: user.mail });
+      } else {
+        res.status(401).json({ error: 'Adresse mail ou mot de passe invalide' });
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  private async readUsersFromJson(): Promise<any[]> {
+    try {
+      const content = await fs.readFile('registered.json', 'utf-8');
+      return JSON.parse(content);
+    } catch (error) {
+      console.error('Error reading users from JSON:', error);
+      return [];
+    }
+  }
+
+  private async writeUsersToJson(users: any[]): Promise<void> {
+    try {
+      await fs.writeFile('registered.json', JSON.stringify(users, null, 2));
+    } catch (error) {
+      console.error('Error writing users to JSON:', error);
+    }
+  }
 
   bootstrap(): void {
     this.express.listen(this.port, () => {
