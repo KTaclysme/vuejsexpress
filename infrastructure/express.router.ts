@@ -4,6 +4,8 @@ import { UserController } from "../user/user.controller";
 import { UserRouter } from "../user/user.router";
 
 // chargé de rediriger les requêtes HTTP vers les bons routeurs métiers
+// Liens entreExpress, model et controller
+// A modifier que si il y a autre chose que User 
 export class ExpressRouter {
     router = Router();
 

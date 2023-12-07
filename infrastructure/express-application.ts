@@ -4,6 +4,8 @@ import { UserJSONService } from '../user/user.json-service';
 import { UserService } from '../user/user.services';
 import * as dotenv from 'dotenv';
 
+//CONFIGURATION 
+// A NE PAS TOUCHER
 export class ExpressApplication {
     private allowedMainOrigin!: string;
     private expressRouter!: ExpressRouter;

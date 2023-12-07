@@ -3,7 +3,7 @@ import { User } from './User';
 import { UserService } from './user.services';
 
 const DEFAULT_USER_ID = 0;
-
+// La logique pour moduler le JSON après ça vers user.router pour les requetes 
 export class UserJSONService implements UserService {
     private readonly userJsonPath = './src/user/users.json';
 
