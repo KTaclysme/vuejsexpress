@@ -1,8 +1,7 @@
 import { ExpressServer } from "./express-server";
 import * as dotenv from 'dotenv';
 import { ExpressRouter } from "./express.router";
-import { UserService } from "../user/user.services";
-import { UserJSONService } from "../user/user.services";
+import { UserService, UserJSONService } from "../user/user.services";
 
 //CONFIGURATION DE L'APPLICATION
 export class ExpressApplication {
@@ -10,6 +9,7 @@ export class ExpressApplication {
     private expressRouter!: ExpressRouter;
     private port!: string;
     private userService!: UserService;
+    private allowedMainOrigin!: string;
 
 
 
@@ -60,7 +60,11 @@ export class ExpressApplication {
     }
 
     private configureServer() {
-        this.server = new ExpressServer(this.expressRouter, this.port);
+        this.server = new ExpressServer(
+            this.allowedMainOrigin,
+            this.expressRouter,
+            this.port,
+        );
     }
   
 }
