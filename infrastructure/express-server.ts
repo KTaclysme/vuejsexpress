@@ -149,14 +149,5 @@ export class ExpressServer {
 
     private configureRoutes(): void {
         this.express.use('/api', this.expressRouter.router);
-        this.router.post('/connexion', (req, res) => {
-          const { email, password } = req.body;
-          const success = this.userController.validateCredentials(email, password);
-          res.json({ success });
-        });
-        this.router.post('/register', (req, res) => {
-          const { email, password } = req.body;
-          res.json({ success: true }); 
-        });   
     }
   }

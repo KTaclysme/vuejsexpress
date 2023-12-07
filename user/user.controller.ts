@@ -1,16 +1,23 @@
 // user.controller.ts
-import { Request, Response } from 'express';
-import { UserService } from './user.services';
+import { UserService } from "./user.services";
+import { User } from "./User";
 
 export class UserController {
     constructor(private userService: UserService) {}
 
-    async validateCredentials(email: string, password: string): Promise<boolean> {
-        const user = await this.userService.getByEmail(email);
-        if (!user) {
-            return false; // L'utilisateur n'a pas été trouvé
-        }
+    getUserById(id: number): User | null {
+        return this.userService.getid(id);
+    }
 
-        return user.password === password;
+    getUserByName(name: string): User {
+        return this.userService.getname(name);
+    }
+
+    getUserByEmail(email: string): User | null {
+        return this.userService.getemail(email);
+    }
+
+    getUserByPassword(password: string): User {
+        return this.userService.getpassword(password);
     }
 }

@@ -1,70 +1,68 @@
-import { ExpressServer } from "./express-server";
+import { ExpressRouter } from './express.router';
+import { ExpressServer } from './express-server';
+import { UserJSONService } from '../user/user.json-service';
+import { UserService } from '../user/user.services';
 import * as dotenv from 'dotenv';
-import { ExpressRouter } from "./express.router";
-import { UserService, UserJSONService } from "../user/user.services";
 
-//CONFIGURATION DE L'APPLICATION
 export class ExpressApplication {
-    private server!: ExpressServer;
+    private allowedMainOrigin!: string;
     private expressRouter!: ExpressRouter;
     private port!: string;
+    private server!: ExpressServer;
     private userService!: UserService;
-    private allowedMainOrigin!: string;
-
-
 
     constructor() {
         this.configureApplication();
     }
 
-   bootstrap(): void {
+    bootstrap(): void {
         this.server.bootstrap();
     }
 
     private configureApplication(): void {
         this.configureEnvironment();
-        this.configureServerPort();
+        this.configureVariables();
         this.configureServices();
         this.configureExpressRouter();
         this.configureServer();
     }
 
-    //Configuration de l'environnement en allant chercher des infos dans .env (port)
     private configureEnvironment(): void {
         dotenv.config({
-            path: '.env'
-        })
+            path: '.env',
+        });
     }
 
-    //'port' est initialisé et on va le chercher dans la classe getPort
+    private configureVariables(): void {
+        this.configureServerPort();
+    }
+
     private configureServerPort(): void {
         this.port = this.getPort();
     }
-    
-    private configureServices(): void {
-        this.userService = new UserJSONService();
-    }
 
-    // Vérifier s'il y a un port si il y en a pas erreur sinon 'port' est défini
     private getPort(): string {
         const port = process.env.PORT;
         if (!port) {
-            throw new Error('None port in dotenv')
+            throw new Error('No port was found in env file.');
         }
+
         return port;
-    } 
-    
+    }
+
+    private configureServices(): void {
+        this.userService = new UserJSONService();
+    }
 
     private configureExpressRouter(): void {
         this.expressRouter = new ExpressRouter(this.userService);
     }
 
-    private configureServer() {
+    private configureServer(): void {
         this.server = new ExpressServer(
             this.allowedMainOrigin,
             this.expressRouter,
             this.port,
         );
     }
-  
 }
