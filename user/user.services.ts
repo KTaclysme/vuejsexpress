@@ -1,22 +1,47 @@
+// user.services.ts
+import fs from 'fs';
+import path from 'path';
 
-// Tous ce qui va toucher l'utilisateur
+const usersFilePath = path.resolve(__dirname, 'users.json');
 
-export class User {
-    constructor(
-        public id : number,
-        public username : string,
-    ) {}
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
 }
-export interface UserService {
-    add(username: string): User;
-    getById(id: number): User | null;
-}
 
-export class UserJSONService implements UserService {
-    add(username: string): User {
-        throw new Error("Method not implemented.");
+export class UserJSONService {
+    private users: User[] = [];
+
+    constructor() {
+        // Chargez les utilisateurs depuis le fichier JSON lors de l'initialisation
+        this.loadUsers();
     }
-    getById(id: number): User | null {
-        throw new Error("Method not implemented.");
+
+    private loadUsers(): void {
+        try {
+            const data = fs.readFileSync(usersFilePath, 'utf-8');
+            this.users = JSON.parse(data);
+        } catch (error) {
+            console.error('Erreur lors du chargement des utilisateurs :', error);
+        }
+    }
+
+    private saveUsers(): void {
+        try {
+            fs.writeFileSync(usersFilePath, JSON.stringify(this.users, null, 2));
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des utilisateurs :', error);
+        }
+    }
+
+    async getByEmail(email: string): Promise<User | null> {
+        return this.users.find((user) => user.email === email) || null;
+    }
+
+    addUser(user: User): void {
+        this.users.push(user);
+        this.saveUsers();
     }
 }

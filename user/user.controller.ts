@@ -1,27 +1,16 @@
-import { negativeNumber, notDefined, spaces } from "../src/utils";
-import { User } from "./user.services";
-import { UserService } from "./user.services";
+// user.controller.ts
+import { Request, Response } from 'express';
+import { UserService } from './user.services';
 
 export class UserController {
     constructor(private userService: UserService) {}
 
-    add(username: string): User{
-        if(notDefined(username)) {
-            throw new Error('Given username is not defined. ');
+    async validateCredentials(email: string, password: string): Promise<boolean> {
+        const user = await this.userService.getByEmail(email);
+        if (!user) {
+            return false; // L'utilisateur n'a pas été trouvé
         }
 
-        if(spaces(username)) {
-            throw new Error('Can\'t have any spaces in the name');
-        }
-
-        return this.userService.add(username);
-    }
-
-    getById(id: number): User | null {
-        if(negativeNumber(id)) {
-            throw new Error('Can\'t be negativ');
-        }
-
-        return this.userService.getById(id);
+        return user.password === password;
     }
 }
