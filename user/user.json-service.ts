@@ -6,7 +6,7 @@ import { UserService } from './user.services';
 const DEFAULT_USER_ID = 0;
 
 export class UserJSONService implements UserService {
-    private readonly userJsonPath = '../jsonFiles/registered.json';
+    private readonly userJsonPath = './registered.json';
 
     constructor() {
         this.writeDefaultUsersJsonFile();
@@ -54,16 +54,20 @@ export class UserJSONService implements UserService {
         return existingUser || null;
     }
 
+    private getUsersFromJsonFile(): User[] {
+        if (existsSync(this.userJsonPath)) {
+            const buffer = readFileSync(this.userJsonPath);
+            const users = JSON.parse(buffer.toString()) as User[];
+            return users;
+        } else {
+            return [];
+        }
+    }
+
     private writeDefaultUsersJsonFile(): void {
         if (!existsSync(this.userJsonPath)) {
             writeFileSync(this.userJsonPath, JSON.stringify([]));
         }
-    }
-
-    private getUsersFromJsonFile(): User[] {
-        const buffer = readFileSync(this.userJsonPath);
-        const users = JSON.parse(buffer.toString()) as User[];
-        return users;
     }
 
     private throwWhennameExists(users: User[], name: string): void {

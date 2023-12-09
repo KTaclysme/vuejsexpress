@@ -1,6 +1,6 @@
 <script>
 
-import users from "../../../../jsonFiles/registered.json";
+import users from "../../../../user/registered.json";
 
 export default {
   data() {
