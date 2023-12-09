@@ -11,7 +11,7 @@ export function negativeNumber(nbr: number): boolean {
 } 
 
 export function areSameStrings(str1: string, str2: string): boolean {
-    return str1.trim().toLowerCase() === str2.trim().toLowerCase();
+    return str1?.trim().toLowerCase() === str2?.trim().toLowerCase();
 }
 
 export function isArrayEmpty(arr: any[]): boolean {

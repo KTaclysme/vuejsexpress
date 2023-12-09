@@ -6,7 +6,7 @@ import axios from 'axios'
 const app = createApp(App)
 
 // Configurer Axios
-axios.defaults.baseURL = 'http://localhost:3000'; //URL de votre backend
+axios.defaults.baseURL = 'http://localhost:3000'; //URL du backend
 
 
 app.config.globalProperties.$axios = axios;

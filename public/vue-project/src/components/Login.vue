@@ -28,7 +28,6 @@ export default {
     return {
       mail: "",
       mdp: "",
-      mailError: "",
       message: "",
     };
   },
@@ -50,21 +49,6 @@ export default {
         // Mot de passe incorrect
         this.mailError = "Adresse mail ou mot de passe incorrect";
       }
-    },
-    handleInscriptionSubmit() {
-      // Logique pour enregistrer un nouvel utilisateur dans le fichier JSON
-      const newUser = {
-        email: this.mail,
-        password: this.mdp,
-      };
-
-      passwords.push(newUser);
-
-      // Enregistrez les modifications dans le fichier JSON
-      fs.writeFileSync("../../../../jsonFiles/registered.json", JSON.stringify(passwords));
-
-      this.message = "Inscription réussie!";
-      this.$router.push("/tuttifrutti");
     },
   },
 };

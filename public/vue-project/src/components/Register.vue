@@ -9,7 +9,6 @@ export default {
       prenom: "",
       mail: "",
       mdp: "",
-      mailError: "",
       message: "",
     };
   },
@@ -24,9 +23,7 @@ export default {
 
       if (existingUser) {
         this.mailError = "Adresse mail déjà utilisée";
-        this.$router.push("/connexion");
       } else {
-        // Ajouter le nouvel utilisateur au fichier JSON (ou à votre backend)
         const newUser = {
           id: users.length + 1,
           name: `${this.prenom} ${this.nom}`,
@@ -34,24 +31,32 @@ export default {
           password: this.mdp,
         };
 
-        users.push(newUser);
-
-        // Vous pouvez sauvegarder le fichier JSON ici, par exemple dans votre backend
-        // fs.writeFileSync('./path/to/your/users.json', JSON.stringify(users));
-
-        this.message = "Inscription réussie";
-        this.clearForm(); // Effacer le formulaire après une inscription réussie
+        fetch('http://localhost:3000/api/user/add-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: newUser.name, email: newUser.email, password: newUser.password }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Réponse du serveur non réussie: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Réponse du serveur:', data);
+            this.message = "Inscription réussie";
+            this.$router.push("/connexion");
+          })
+          .catch(error => {
+            console.error('Erreur lors de la requête:', error);
+          });
       }
-    },
-    clearForm() {
-      this.nom = "";
-      this.prenom = "";
-      this.mail = "";
-      this.mdp = "";
-      this.mailError = "";
     },
   },
 };
+
 </script>
 
 <template>

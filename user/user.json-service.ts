@@ -1,5 +1,5 @@
 import { areSameStrings, isArrayEmpty } from '../src/utils';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync,mkdirSync  } from 'fs';
 import { User } from './User';
 import { UserService } from './user.services';
 
@@ -15,7 +15,7 @@ export class UserJSONService implements UserService {
     add(name: string, email: string, password: string): User {
         const users = this.getUsersFromJsonFile();
 
-        this.throwWhennameExists(users, name);
+        // this.throwWhennameExists(users, name);
 
         const newId = this.generateUniqueId(users);
         const newUser = new User(newId, name, email, password);
@@ -36,8 +36,8 @@ export class UserJSONService implements UserService {
     getname(name: string): User | null {
         const users = this.getUsersFromJsonFile();
 
-        const existingUser = users.find((user) => areSameStrings(user.name, name));
-        return existingUser || null;
+        // const existingUser = users.find((user) => areSameStrings(user.name, name));
+        return null;
     }
 
     getemail(email: string): User | null {
@@ -50,8 +50,8 @@ export class UserJSONService implements UserService {
     getpassword(password: string): User | null {
         const users = this.getUsersFromJsonFile();
 
-        const existingUser = users.find((user) => areSameStrings(user.password, password));
-        return existingUser || null;
+        // const existingUser = users.find((user) => areSameStrings(user.password, password));
+        return null;
     }
 
     private getUsersFromJsonFile(): User[] {
@@ -66,20 +66,24 @@ export class UserJSONService implements UserService {
 
     private writeDefaultUsersJsonFile(): void {
         if (!existsSync(this.userJsonPath)) {
+            const dir = this.userJsonPath.substring(0, this.userJsonPath.lastIndexOf('/'));
+            if (!existsSync(dir)) {
+                mkdirSync(dir, { recursive: true });
+            }
+
             writeFileSync(this.userJsonPath, JSON.stringify([]));
         }
     }
 
-    private throwWhennameExists(users: User[], name: string): void {
-        const nameAlreadyExists = users.some((user) =>
-            areSameStrings(user.name, name),
-        );
-        if (nameAlreadyExists) {
-            throw new Error(
-                `Given name "${name}" points to an existing user.`,
-            );
-        }
-    }
+    // private throwWhennameExists(users: User[], name: string): void {
+    //     const nameAlreadyExists = users.some((user) =>
+    //         areSameStrings(user.name, name),
+    //     );
+    //     if (nameAlreadyExists) {
+    //         throw new Error(`Un utilisateur avec le nom '${name}' existe déjà.`);
+    //     }
+    // }
+    
 
     private generateUniqueId(users: User[]): number {
         if (isArrayEmpty(users)) {

@@ -1,1 +1,21 @@
-[]
+[
+    {
+        "id": 0
+    },
+    {
+        "id": 1,
+        "name": "ajne",
+        "email": "izuerntf@zefg.com",
+        "password": "azerty"
+    },
+    {
+        "id": 2,
+        "email": "groscaca@pipi.com",
+        "password": "prout"
+    },
+    {
+        "id": 3,
+        "email": "prout@gmail.com",
+        "password": "azerty"
+    }
+]

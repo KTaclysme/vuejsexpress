@@ -31,5 +31,5 @@ export class UserRouter {
                 next(error);
             }
         });
-    }
+    } 
 }
