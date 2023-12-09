@@ -37,7 +37,7 @@ export class ExpressServer {
         //         if (isOriginAllowed) {
         //             callback(null, true);
         //         } else {
-        //             callback(new Error('CORS: Request origin is not allowed'));
+        //             callback(new Error('CORS: Request origin is not allowed')); //bloqué à cette étape...
         //         }
         //     },
         // };

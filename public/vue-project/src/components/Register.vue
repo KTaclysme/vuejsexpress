@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       nom: "",
-      prenom: "",
+      name: "",
       mail: "",
       mdp: "",
       message: "",
@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     handleInscriptionSubmit() {
-      if (!this.nom || !this.prenom || !this.mail || !this.mdp) {
+      if (!this.name || !this.mail || !this.mdp) {
         this.mailError = "Veuillez remplir tous les champs";
         return;
       }
@@ -26,7 +26,7 @@ export default {
       } else {
         const newUser = {
           id: users.length + 1,
-          name: `${this.prenom} ${this.nom}`,
+          name: this.name,
           email: this.mail,
           password: this.mdp,
         };
@@ -36,7 +36,7 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username: newUser.name, email: newUser.email, password: newUser.password }),
+          body: JSON.stringify({ name: newUser.name, email: newUser.email, password: newUser.password }),
         })
           .then(response => {
             if (!response.ok) {
@@ -68,7 +68,7 @@ export default {
       </label>
       <br />
       <label>
-        <input v-model="prenom" type="text" placeholder="Prénom" />
+        <input v-model="name" type="text" placeholder="Prénom" />
       </label>
       <br />
       <label>

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import passwords from "../../../../user/registered.json";
+import passwords from "../../../../registered.json";
 import fs from 'fs';
 
 export default {
