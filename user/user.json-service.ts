@@ -1,23 +1,24 @@
+import { areSameStrings, isArrayEmpty } from '../functions/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { User } from './User';
 import { UserService } from './user.services';
 
 const DEFAULT_USER_ID = 0;
-// La logique pour moduler le JSON après ça vers user.router pour les requetes 
+
 export class UserJSONService implements UserService {
-    private readonly userJsonPath = './src/user/users.json';
+    private readonly userJsonPath = '../jsonFiles/registered.json';
 
     constructor() {
         this.writeDefaultUsersJsonFile();
     }
 
-    add(name: string): User {
+    add(name: string, email: string, password: string): User {
         const users = this.getUsersFromJsonFile();
 
         this.throwWhennameExists(users, name);
 
         const newId = this.generateUniqueId(users);
-        const newUser = new User(newId, name);
+        const newUser = new User(newId, name, email, password);
 
         users.push(newUser);
         this.overrideUsers(users);
@@ -29,6 +30,27 @@ export class UserJSONService implements UserService {
         const users = this.getUsersFromJsonFile();
 
         const existingUser = users.find((user) => user.id == id);
+        return existingUser || null;
+    }
+
+    getname(name: string): User | null {
+        const users = this.getUsersFromJsonFile();
+
+        const existingUser = users.find((user) => areSameStrings(user.name, name));
+        return existingUser || null;
+    }
+
+    getemail(email: string): User | null {
+        const users = this.getUsersFromJsonFile();
+
+        const existingUser = users.find((user) => areSameStrings(user.email, email));
+        return existingUser || null;
+    }
+
+    getpassword(password: string): User | null {
+        const users = this.getUsersFromJsonFile();
+
+        const existingUser = users.find((user) => areSameStrings(user.password, password));
         return existingUser || null;
     }
 
