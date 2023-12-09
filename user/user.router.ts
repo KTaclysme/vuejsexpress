@@ -13,7 +13,7 @@ export class UserRouter {
     private configureRoutes(): void {
         this.router.get('/:id', (req, res, next) => {
             try {
-                const result = this.userController.getById(
+                const result = this.userController.getUserById(
                     parseInt(req.params.id)
                 );
                 res.status(200).json(result);
@@ -24,7 +24,8 @@ export class UserRouter {
 
         this.router.post('/add-user', (req, res, next) => {
             try {
-                const result = this.userController.add(req.body.username);
+                const { name, email, password } = req.body;
+                const result = this.userController.addUser(name, email, password);
                 res.status(201).json(result);
             } catch (error) {
                 next(error);

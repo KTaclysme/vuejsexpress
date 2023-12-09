@@ -5,11 +5,15 @@ import { User } from "./User";
 export class UserController {
     constructor(private userService: UserService) {}
 
-    getUserById(id: number): User | null {
-        return this.userService.getid(id);
+    addUser(name: string, email: string, password: string): User {
+        return this.userService.add(name, email, password);
     }
 
-    getUserByName(name: string): User {
+    getUserById(id: number): User | null {
+        return this.userService.getId(id);
+    }
+
+    getUserByName(name: string): User | null {
         return this.userService.getname(name);
     }
 
@@ -17,7 +21,7 @@ export class UserController {
         return this.userService.getemail(email);
     }
 
-    getUserByPassword(password: string): User {
+    getUserByPassword(password: string): User | null{
         return this.userService.getpassword(password);
     }
 }

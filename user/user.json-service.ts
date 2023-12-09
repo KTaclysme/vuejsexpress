@@ -1,4 +1,4 @@
-import { areSameStrings, isArrayEmpty } from '../functions/utils';
+import { areSameStrings, isArrayEmpty } from '../src/utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { User } from './User';
 import { UserService } from './user.services';
