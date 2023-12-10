@@ -1,20 +1,10 @@
 <script setup lang="ts">
 const apiKey = "11920b0";
 
-//Description du film
-fetch(`http://www.omdbapi.com/?apikey=${apiKey}&`)
-    .then(response => response.json())
-    .then(data => {
-        // Handle the data here
-        console.log(data);
-    })
-    .catch(error => {
-        // Handle errors here
-        console.error('Error:', error);
-    });
+// http://www.omdbapi.com/?s=interstellar&page=1&apiKey=11920b0
+// http://www.omdbapi.com/?i=tt0816692&apiKey=11920b0
 
-//Poster du film
-fetch(`http://img.omdbapi.com/?apikey=${apiKey}&`)
+fetch(`http://www.omdbapi.com/?apikey=${apiKey}`)
     .then(response => response.json())
     .then(data => {
         // Handle the data here
@@ -31,7 +21,6 @@ fetch(`http://img.omdbapi.com/?apikey=${apiKey}&`)
         <h1>
             BIENVENU SUR TUTTI FRUTTI
         </h1>
-        <input @change="">
     </main>
 </template>
 
