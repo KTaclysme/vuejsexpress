@@ -1,1 +1,39 @@
-[{"id":0},{"id":1,"name":"ajne","email":"izuerntf@zefg.com","password":"azerty"},{"id":2,"email":"groscaca@pipi.com","password":"prout"},{"id":3,"email":"prout@gmail.com","password":"azerty"},{"id":4,"name":"aeaeae","email":"Arte@zert.tyr","password":"azerty"},{"id":5,"name":"aeaeaea","email":"okr@gmail.com","password":"wxcv"}]
+[
+    {
+        "id": 0
+    },
+    {
+        "id": 1,
+        "name": "ajne",
+        "email": "izuerntf@zefg.com",
+        "password": "azerty"
+    },
+    {
+        "id": 2,
+        "email": "groscaca@pipi.com",
+        "password": "prout"
+    },
+    {
+        "id": 3,
+        "email": "prout@gmail.com",
+        "password": "azerty"
+    },
+    {
+        "id": 4,
+        "name": "aeaeae",
+        "email": "Arte@zert.tyr",
+        "password": "azerty"
+    },
+    {
+        "id": 5,
+        "name": "aeaeaea",
+        "email": "okr@gmail.com",
+        "password": "wxcv"
+    },
+    {
+        "id": 6,
+        "name": "mlro",
+        "email": "qsdf@gmail.com",
+        "password": "azerty"
+    }
+]

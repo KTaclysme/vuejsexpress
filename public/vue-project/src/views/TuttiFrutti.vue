@@ -1,30 +1,89 @@
-<script setup lang="ts">
-const apiKey = "11920b0";
-
-// http://www.omdbapi.com/?s=interstellar&page=1&apiKey=11920b0 avoir la page avoir l'id
-// http://www.omdbapi.com/?i=tt0816692&apiKey=11920b0 avoir les info via l'id imbd
-// http://img.omdbapi.com/?apikey=[yourkey]& avoir le poster
-// avoir l'id -> avoir l'info et le poster avec l'id 
-
-
-fetch(`http://www.omdbapi.com/?apikey=${apiKey}`)
-    .then(response => response.json())
-    .then(data => {
-        // Handle the data here
-        console.log(data);
-    })
-    .catch(error => {
-        // Handle errors here
-        console.error('Error:', error);
-    });
-</script>
-
 <template>
-    <main>
-        <h1>
-            BIENVENU SUR TUTTI FRUTTI
-        </h1>
-    </main>
+    <div id="app">
+        <div v-if="!gameOver">
+            <h3>You have {{ lives }} lives left and you have used these letters: {{ usedLetters.join(' ') }}</h3>
+            <!-- <pre>{{ livesVisual }}</pre> -->
+            <h3>Current word: {{ currentWord.join(' ') }}</h3>
+            <input v-model="userLetter" type="text" maxlength="1" @input="onInputChange">
+            <button @click="makeGuess">Guess</button>
+        </div>
+        <div v-else>
+            <p v-if="lives === 0">You died, sorry. The word was {{ word }}</p>
+            <p v-else>Congratulations! You guessed the word {{ word }}!</p>
+            <button @click="restart">Restart</button>
+        </div>
+    </div>
 </template>
+  
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import words from './words.json';
 
-<style scoped></style>
+const word = ref('');
+const wordLetters = ref<string[]>([]);
+const alphabet = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+const usedLetters = ref<string[]>([]);
+const lives = ref(7);
+const currentWord = ref<string[]>([]);
+const userLetter = ref('');
+const gameOver = ref(false);
+const livesVisualDict = { /* Add your visual representation here */ };
+
+const getValidWord = () => {
+    let selectedWord = words[Math.floor(Math.random() * words.length)];
+    while (selectedWord.includes('-') || selectedWord.includes(' ')) {
+        selectedWord = words[Math.floor(Math.random() * words.length)];
+    }
+    return selectedWord.toUpperCase();
+};
+
+const onInputChange = () => {
+    userLetter.value = userLetter.value.toUpperCase();
+};
+
+const makeGuess = () => {
+    if (!gameOver.value) {
+        if (alphabet.has(userLetter.value) && !usedLetters.value.includes(userLetter.value)) {
+            usedLetters.value.push(userLetter.value);
+            if (wordLetters.value.includes(userLetter.value)) {
+                wordLetters.value = wordLetters.value.filter(letter => letter !== userLetter.value);
+                updateCurrentWord();
+            } else {
+                lives.value--;
+            }
+            if (wordLetters.value.length === 0 || lives.value === 0) {
+                gameOver.value = true;
+            }
+        } else {
+            alert('Please enter a valid letter that you have not used before.');
+        }
+    }
+};
+
+const updateCurrentWord = () => {
+    currentWord.value = word.value.split('').map(letter =>
+        usedLetters.value.includes(letter) ? letter : (letter === ' ' ? ' ' : '-')
+    );
+};
+
+const restart = () => {
+    // Reset game state variables
+    word.value = getValidWord();
+    wordLetters.value = word.value.split('');
+    currentWord.value = wordLetters.value.map(letter => (letter === ' ' ? ' ' : '-'));
+    usedLetters.value = [];
+    lives.value = 7;
+    gameOver.value = false;
+};
+
+onMounted(() => {
+    word.value = getValidWord();
+    wordLetters.value = word.value.split('');
+    currentWord.value = wordLetters.value.map(letter => (letter === ' ' ? ' ' : '-'));
+});
+</script>
+  
+<style scoped>
+/* Add your styles here */
+</style>
+  
