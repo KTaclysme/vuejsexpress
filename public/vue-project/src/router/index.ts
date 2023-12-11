@@ -14,7 +14,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/tuttifrutti',
+      path: '/:id/tuttifrutti',
       name: 'tuttifrutti',
       component: TuttiFruttiVue
     },
@@ -22,11 +22,6 @@ const router = createRouter({
       path: '/produit',
       name: 'searchbar',
       component: SearchBar
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/inscription',

@@ -2,7 +2,6 @@
     <div id="app">
         <div v-if="!gameOver">
             <h3>You have {{ lives }} lives left and you have used these letters: {{ usedLetters.join(' ') }}</h3>
-            <!-- <pre>{{ livesVisual }}</pre> -->
             <h3>Current word: {{ currentWord.join(' ') }}</h3>
             <input v-model="userLetter" type="text" maxlength="1" @input="onInputChange">
             <button @click="makeGuess">Guess</button>
@@ -27,7 +26,6 @@ const lives = ref(7);
 const currentWord = ref<string[]>([]);
 const userLetter = ref('');
 const gameOver = ref(false);
-const livesVisualDict = { /* Add your visual representation here */ };
 
 const getValidWord = () => {
     let selectedWord = words[Math.floor(Math.random() * words.length)];
@@ -67,7 +65,6 @@ const updateCurrentWord = () => {
 };
 
 const restart = () => {
-    // Reset game state variables
     word.value = getValidWord();
     wordLetters.value = word.value.split('');
     currentWord.value = wordLetters.value.map(letter => (letter === ' ' ? ' ' : '-'));
@@ -83,7 +80,5 @@ onMounted(() => {
 });
 </script>
   
-<style scoped>
-/* Add your styles here */
-</style>
+<style scoped></style>
   

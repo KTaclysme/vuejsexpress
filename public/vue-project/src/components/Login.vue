@@ -40,11 +40,12 @@ export default {
 
       // Recherchez le mot de passe correspondant à l'adresse e-mail dans votre fichier JSON
       const user = passwords.find((user) => user.email === this.mail);
+      const id = user.id;
 
       if (user && user.password === this.mdp) {
         // Connexion réussie
         this.message = "Connexion réussie!";
-        this.$router.push("/tuttifrutti");
+        this.$router.push(`/${id}/tuttifrutti`);
       } else {
         // Mot de passe incorrect
         this.mailError = "Adresse mail ou mot de passe incorrect";
