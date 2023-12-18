@@ -4,7 +4,7 @@
     <div class="navbar">
       <ul>
         <li>
-          <h1><router-link class="navtitle" to="/">CZON</router-link></h1>
+          <h1><router-link class="navtitle" to="/">ZEPENDAX</router-link></h1>
         </li>
         <li><router-link class="navchar" to="/produit">Produits</router-link></li>
         <li><router-link class="navchar" to="/connexion">Connexion</router-link></li>

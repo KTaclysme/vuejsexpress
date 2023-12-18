@@ -16,7 +16,7 @@
   
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import words from './words.json';
+import words from '../../../../word/words.json';
 
 const word = ref('');
 const wordLetters = ref<string[]>([]);
