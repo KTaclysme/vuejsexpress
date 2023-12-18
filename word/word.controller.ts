@@ -5,7 +5,8 @@ import { Word } from "./Word";
 export class WordController {
     constructor(private wordService: WordService) {}
 
-    addWord(name: string, email: string, password: string): Word {
+    // TO DO FAIRE UN AFFICHAGE POUR LES MOTS, AJOUTER, MODIFIER ET SUPPRIMER
+    addWord(name: string, email: string, password: string): Word { 
         return this.wordService.add(name, email, password);
     }
 
