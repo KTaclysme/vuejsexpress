@@ -51,5 +51,15 @@ export class UserRouter {
                 next(error);
             }
         })
+
+        this.router.post("/update-user", (req,res,next) => {
+            try {
+                const {id, name, email, password } = req.body;
+                const result = this.userController.updUser(id, name, email, password);
+                res.status(201).json(result);
+            } catch (error) {
+                next(error);
+            }
+        })
     } 
 }

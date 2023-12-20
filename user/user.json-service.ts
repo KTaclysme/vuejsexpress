@@ -64,11 +64,25 @@ export class UserJSONService implements UserService {
         return null;
     }
 
+    
+    //TODO
     display(name: string, email: string): User | null {
         const users = this.getUsersFromJsonFile();
         return users;
     }
     
+    update(id: number, name: string, email: string, password: string): User{
+        const users = this.getUsersFromJsonFile();
+
+        const userIndex = users.findIndex((user) => user.id === id);
+        users[userIndex].name = name;
+        users[userIndex].email = email;
+        users[userIndex].password = password;
+        this.overrideUsers(users);
+        return users[userIndex];
+
+    }
+
 
     private getUsersFromJsonFile(): User[] {
         if (existsSync(this.userJsonPath)) {

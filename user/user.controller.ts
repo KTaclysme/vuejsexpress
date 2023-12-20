@@ -31,4 +31,8 @@ export class UserController {
     delUser(name: string, email: string, password: string): User {
         return this.userService.delete(name, email, password);
     }
+
+    updUser(id: number, name: string, email: string, password: string): User {
+        return this.userService.update(id, name, email, password);
+    }
 }

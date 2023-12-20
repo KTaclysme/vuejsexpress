@@ -9,4 +9,5 @@ export interface UserService {
     getpassword(password: string): User | null;
     display(name: string, email: string): User | null;
     delete(name: string, email: string, password: string): User;
+    update(id: number, name: string, email: string, password: string): User
 }
