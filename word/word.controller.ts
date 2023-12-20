@@ -6,11 +6,16 @@ export class WordController {
     constructor(private wordService: WordService) {}
 
     // TO DO FAIRE UN AFFICHAGE POUR LES MOTS, AJOUTER, MODIFIER ET SUPPRIMER
-    addWord(name: string, email: string, password: string): Word { 
-        return this.wordService.add(name, email, password);
+    // Regarder comment faire sans parametre... 
+    getWordbyWord(word: string): Word { 
+        return this.wordService.getWord(word);
     }
 
     getWordById(id: number): Word | null {
+        return this.wordService.getId(id);
+    }
+
+    delWord(id: number) : Word | null {
         return this.wordService.getId(id);
     }
 }

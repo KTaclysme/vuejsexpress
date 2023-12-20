@@ -24,8 +24,8 @@ export class WordRouter {
 
         this.router.post('/add-word', (req, res, next) => {
             try {
-                const { name, email, password } = req.body;
-                const result = this.wordController.addWord(name, email, password);
+                const {word} = req.body;
+                const result = this.wordController.getWordbyWord(word);
                 res.status(201).json(result);
             } catch (error) {
                 next(error);
