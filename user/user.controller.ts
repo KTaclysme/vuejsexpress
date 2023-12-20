@@ -24,4 +24,11 @@ export class UserController {
     getUserByPassword(password: string): User | null{
         return this.userService.getpassword(password);
     }
+
+    displayUser(name: string, email: string): User | null {
+        return this.userService.display(name, email);
+    }
+    delUser(name: string, email: string, password: string): User {
+        return this.userService.delete(name, email, password);
+    }
 }

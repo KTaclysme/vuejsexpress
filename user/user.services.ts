@@ -7,4 +7,6 @@ export interface UserService {
     getname(name: string): User | null;
     getemail(email: string): User | null;
     getpassword(password: string): User | null;
+    display(name: string, email: string): User | null;
+    delete(name: string, email: string, password: string): User;
 }

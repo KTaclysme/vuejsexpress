@@ -31,5 +31,25 @@ export class UserRouter {
                 next(error);
             }
         });
+
+        this.router.get('/user',  (req, res, next) => {
+            try {
+                const { name, email } = req.body;
+                const users = this.userController.displayUser(name, email);
+                res.json(users);
+            } catch (error) {
+                next(error);
+            }
+        });
+
+        this.router.post("/del-user", (req,res,next) => {
+            try {
+                const { name, email, password } = req.body;
+                const result = this.userController.delUser(name, email, password);
+                res.status(201).json(result);
+            } catch (error) {
+                next(error);
+            }
+        })
     } 
 }

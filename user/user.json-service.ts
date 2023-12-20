@@ -15,8 +15,6 @@ export class UserJSONService implements UserService {
     add(name: string, email: string, password: string): User {
         const users = this.getUsersFromJsonFile();
 
-        // this.throwWhennameExists(users, name);
-
         const newId = this.generateUniqueId(users);
         const newUser = new User(newId, name, email, password);
 
@@ -24,6 +22,20 @@ export class UserJSONService implements UserService {
         this.overrideUsers(users);
 
         return newUser;
+    }
+
+    delete(name: string, email: string, password: string): User {
+        const users = this.getUsersFromJsonFile();
+    
+        // Recherche d'un utilisateur correspondant aux critères name, email et password
+        const matchingUserIndex = users.findIndex((user) => 
+            areSameStrings(user.name, name) &&
+            areSameStrings(user.email, email) &&
+            areSameStrings(user.password, password)
+        );
+        const deletedUser = users.splice(matchingUserIndex, 1)[0];
+        this.overrideUsers(users);
+        return deletedUser;
     }
 
     getId(id: number): User | null {
@@ -36,7 +48,6 @@ export class UserJSONService implements UserService {
     getname(name: string): User | null {
         const users = this.getUsersFromJsonFile();
 
-        // const existingUser = users.find((user) => areSameStrings(user.name, name));
         return null;
     }
 
@@ -50,14 +61,19 @@ export class UserJSONService implements UserService {
     getpassword(password: string): User | null {
         const users = this.getUsersFromJsonFile();
 
-        // const existingUser = users.find((user) => areSameStrings(user.password, password));
         return null;
     }
 
+    display(name: string, email: string): User | null {
+        const users = this.getUsersFromJsonFile();
+        return users;
+    }
+    
+
     private getUsersFromJsonFile(): User[] {
         if (existsSync(this.userJsonPath)) {
-            const buffer = readFileSync(this.userJsonPath);
-            const users = JSON.parse(buffer.toString()) as User[];
+            const reader = readFileSync(this.userJsonPath);
+            const users = JSON.parse(reader.toString()) as User[];
             return users;
         } else {
             return [];
@@ -74,15 +90,6 @@ export class UserJSONService implements UserService {
             writeFileSync(this.userJsonPath, JSON.stringify([]));
         }
     }
-
-    // private throwWhennameExists(users: User[], name: string): void {
-    //     const nameAlreadyExists = users.some((user) =>
-    //         areSameStrings(user.name, name),
-    //     );
-    //     if (nameAlreadyExists) {
-    //         throw new Error(`Un utilisateur avec le nom '${name}' existe déjà.`);
-    //     }
-    // }
     
 
     private generateUniqueId(users: User[]): number {
@@ -97,4 +104,5 @@ export class UserJSONService implements UserService {
     private overrideUsers(users: User[]): void {
         writeFileSync(this.userJsonPath, JSON.stringify(users));
     }
+
 }
