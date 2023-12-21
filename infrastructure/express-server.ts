@@ -9,7 +9,6 @@ export class ExpressServer {
     private express = express();
 
     constructor(
-        private allowedMainOrigin: string,
         private expressRouter: ExpressRouter,
         private port: string,
     ) {
@@ -29,18 +28,6 @@ export class ExpressServer {
     }
 
     private configureCorsPolicy(): void {
-        // const corsOptions: CorsOptions = {
-        //     origin: (origin, callback) => {
-        //         const isOriginAllowed =
-        //             !origin || this.allowedMainOrigin === origin;
-
-        //         if (isOriginAllowed) {
-        //             callback(null, true);
-        //         } else {
-        //             callback(new Error('CORS: Request origin is not allowed')); //bloqué à cette étape...
-        //         }
-        //     },
-        // };
         const corsOptions: CorsOptions = {
             origin: '*',
         };
