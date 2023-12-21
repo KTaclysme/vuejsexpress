@@ -3,7 +3,7 @@
     <!-- Footer -->
     <div class="footer">
       <ul>
-        <li><router-link class="navchar" to="default.asp">Home</router-link></li>
+        <li><router-link class="navchar" to="/">Home</router-link></li>
       </ul>
     </div>
   </div>

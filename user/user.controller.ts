@@ -13,16 +13,8 @@ export class UserController {
         return this.userService.getId(id);
     }
 
-    getUserByName(name: string): User | null {
-        return this.userService.getname(name);
-    }
-
     getUserByEmail(email: string): User | null {
         return this.userService.getemail(email);
-    }
-
-    getUserByPassword(password: string): User | null{
-        return this.userService.getpassword(password);
     }
 
     displayUser(name: string, email: string): User | null {

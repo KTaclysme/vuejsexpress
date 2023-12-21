@@ -27,7 +27,6 @@ export class UserJSONService implements UserService {
     delete(name: string, email: string, password: string): User {
         const users = this.getUsersFromJsonFile();
     
-        // Recherche d'un utilisateur correspondant aux critères name, email et password
         const matchingUserIndex = users.findIndex((user) => 
             areSameStrings(user.name, name) &&
             areSameStrings(user.email, email) &&
@@ -45,12 +44,6 @@ export class UserJSONService implements UserService {
         return existingUser || null;
     }
 
-    getname(name: string): User | null {
-        const users = this.getUsersFromJsonFile();
-
-        return null;
-    }
-
     getemail(email: string): User | null {
         const users = this.getUsersFromJsonFile();
 
@@ -58,18 +51,17 @@ export class UserJSONService implements UserService {
         return existingUser || null;
     }
 
-    getpassword(password: string): User | null {
-        const users = this.getUsersFromJsonFile();
 
-        return null;
-    }
-
-    
-    //TODO
     display(name: string, email: string): User | null {
         const users = this.getUsersFromJsonFile();
-        return users;
+        console.log('Searching for user by name and email:', name, email);
+    
+        const matchingUser = users.find(user => user.name === name && user.email === email);
+        console.log('Matching user:', matchingUser); 
+    
+        return matchingUser || null;
     }
+    
     
     update(id: number, name: string, email: string, password: string): User{
         const users = this.getUsersFromJsonFile();
@@ -80,19 +72,19 @@ export class UserJSONService implements UserService {
         users[userIndex].password = password;
         this.overrideUsers(users);
         return users[userIndex];
-
     }
-
 
     private getUsersFromJsonFile(): User[] {
         if (existsSync(this.userJsonPath)) {
-            const reader = readFileSync(this.userJsonPath);
-            const users = JSON.parse(reader.toString()) as User[];
-            return users;
+          const reader = readFileSync(this.userJsonPath);
+          const users = JSON.parse(reader.toString()) as User[];
+          console.log('Utilisateurs chargés depuis le fichier JSON :', users);
+          return users;
         } else {
-            return [];
+          console.log("Le fichier JSON d'utilisateurs n'existe pas.");
+          return [];
         }
-    }
+      }
 
     private writeDefaultUsersJsonFile(): void {
         if (!existsSync(this.userJsonPath)) {

@@ -32,7 +32,7 @@ export class UserRouter {
             }
         });
 
-        this.router.get('/user',  (req, res, next) => {
+        this.router.get('/display-user', (req, res, next) => {
             try {
                 const { name, email } = req.body;
                 const users = this.userController.displayUser(name, email);
@@ -41,7 +41,8 @@ export class UserRouter {
                 next(error);
             }
         });
-
+        
+        
         this.router.post("/del-user", (req,res,next) => {
             try {
                 const { name, email, password } = req.body;

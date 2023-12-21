@@ -11,6 +11,9 @@
             <p v-else>Congratulations! You guessed the word {{ word }}!</p>
             <button @click="restart">Restart</button>
         </div>
+        <div>
+            <button><a href="/user">TO GET MORE FRUITS</a></button>
+        </div>
     </div>
 </template>
   

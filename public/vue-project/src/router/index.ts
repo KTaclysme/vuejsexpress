@@ -4,6 +4,7 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import SearchBar from '../components/SearchBar.vue'
 import TuttiFruttiVue from '@/views/TuttiFrutti.vue'
+import FruityViewVue from '@/views/FruityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/connexion',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/user',
+      name: 'Display',
+      component: FruityViewVue
     }
   ]
 })
