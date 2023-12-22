@@ -1,15 +1,15 @@
 <template>
     <div id="app">
         <div v-if="!gameOver">
-            <h3>You have {{ lives }} lives left and you have used these letters: {{ usedLetters.join(' ') }}</h3>
-            <h3>Current word: {{ currentWord.join(' ') }}</h3>
+            <h3>Tu as {{ lives }} PV restant et tu as utilisé ces lettres: {{ usedLetters.join(' ') }}</h3>
+            <h3>mot à trouver (en anglais): {{ currentWord.join(' ') }}</h3>
             <input v-model="userLetter" type="text" maxlength="1" @input="onInputChange">
-            <button @click="makeGuess">Guess</button>
+            <button @click="makeGuess">Envoi</button>
         </div>
         <div v-else>
-            <p v-if="lives === 0">You died, sorry. The word was {{ word }}</p>
-            <p v-else>Congratulations! You guessed the word {{ word }}!</p>
-            <button @click="restart">Restart</button>
+            <p v-if="lives === 0">Zut il es mort! le mot était: {{ word }}</p>
+            <p v-else>Bravo! Tu as deviné le mot: {{ word }}!</p>
+            <button @click="restart">Recommencer</button>
         </div>
         <div>
             <button><a href="/user">TO GET MORE FRUITS</a></button>
